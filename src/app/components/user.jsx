@@ -1,5 +1,7 @@
 import React from "react";
 import Qualitie from "./qualitie";
+import BookMark from "./bookmark";
+import PropTypes from "prop-types";
 
 const User = ({ _id, onDelete, onToggleBookMark, ...user }) => {
   return (
@@ -15,15 +17,10 @@ const User = ({ _id, onDelete, onToggleBookMark, ...user }) => {
         <td>{user.completedMeetings}</td>
         <td>{user.rate} /5</td>
         <td>
-          <button
-            className={
-              "bi " +
-              (user.bookmark === false
-                ? "bi-bookmark"
-                : "bi-bookmark-heart-fill")
-            }
+          <BookMark
+            status={user.bookmark}
             onClick={() => onToggleBookMark(_id)}
-          ></button>
+          />
         </td>
         <td>
           <button onClick={() => onDelete(_id)} className="btn btn-danger">
@@ -33,6 +30,11 @@ const User = ({ _id, onDelete, onToggleBookMark, ...user }) => {
       </tr>
     </>
   );
+};
+User.propTypes = {
+  _id: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onToggleBookMark: PropTypes.func.isRequired
 };
 
 export default User;
