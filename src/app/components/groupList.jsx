@@ -8,23 +8,40 @@ const GroupList = ({
   onItemSelect,
   selectedItem
 }) => {
-  return (
-    <>
+  if (!Array.isArray(items)) {
+    return (
       <ul className="list-group">
-        {items.map((item) => (
+        {Object.keys(items).map((item) => (
           <li
-            key={item._id}
+            key={items[item][valueProperty]}
             className={
-              "list-group-item" + (item === selectedItem ? " active" : "")
+              "list-group-item" +
+              (items[item] === selectedItem ? " active" : "")
             }
-            onClick={() => onItemSelect(item)}
+            onClick={() => onItemSelect(items[item])}
             role="button"
           >
-            {item.name}
+            {items[item][contentProperty]}
           </li>
         ))}
       </ul>
-    </>
+    );
+  }
+  return (
+    <ul className="list-group">
+      {items.map((item) => (
+        <li
+          key={item[valueProperty]}
+          className={
+            "list-group-item" + (item === selectedItem ? " active" : "")
+          }
+          onClick={() => onItemSelect(item)}
+          role="button"
+        >
+          {item[contentProperty]}
+        </li>
+      ))}
+    </ul>
   );
 };
 GroupList.defaultProps = {
