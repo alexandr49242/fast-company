@@ -1,38 +1,34 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
 import PropTypes from "prop-types";
-import Qualitie from "./qualitie";
+import QualitiesList from "./qualitiesList";
 import { useHistory } from "react-router-dom";
 
 const UserPage = ({ id }) => {
-  const [users, setUsers] = useState();
+  const history = useHistory();
+  const [user, setUsers] = useState();
   useEffect(() => {
     API.users.getById(id).then((data) => setUsers(data));
   }, []);
-  const history = useHistory();
-  const handleSave = () => {
-    history.replace("/users"); // push ("/posts") - если нужно чтобы сохранялась
+  const handleClick = () => {
+    history.push("/users"); // push ("/posts") - если нужно чтобы сохранялась
   };
-  if (users) {
+  if (user) {
     return (
-      <>
-        <h1>{users.name}</h1>
-        <h2>Профессия: {users.profession.name}</h2>
-        <p>
-          {users.qualities.map((item) => (
-            <Qualitie key={item._id} {...item} />
-          ))}
-        </p>
-        <p>completedMeetings: {users.completedMeetings}</p>
-        <h2>Rate: {users.rate} /5</h2>
+      <div>
+        <h1>{user.name}</h1>
+        <h2>Профессия: {user.profession.name}</h2>
+        <QualitiesList qualities={user.qualities} />
+        <p>completedMeetings: {user.completedMeetings}</p>
+        <h2>Rate: {user.rate} /5</h2>
         <button
           onClick={() => {
-            handleSave();
+            handleClick();
           }}
         >
           Все пользователи
         </button>
-      </>
+      </div>
     );
   }
   return <h2>LOADING</h2>;
